@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+
 import '../state/message.dart';
 
 class MessageRepository {

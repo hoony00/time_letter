@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import '../repository/message_repository.dart';
 import '../state/message.dart';
 
@@ -19,11 +20,11 @@ class MessageController extends GetxController {
 
   void addMessage(Message message) async {
     await repository.addMessage(message);
-    loadMessages();
+    messages.value = [...messages, message];
   }
 
   void deleteMessage(int index) async {
     await repository.deleteMessage(index);
-    loadMessages();
+    messages.removeAt(index);
   }
 }

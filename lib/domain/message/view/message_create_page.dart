@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../constants/theme.dart';
 import '../get_x/message_controller.dart';
 import '../state/message.dart';
@@ -53,7 +54,7 @@ class _MessageCreatePageState extends State<MessageCreatePage> {
                 hintText: '미래의 나에게 하고 싶은 말을 적어보세요.',
               ),
               onChanged: (text) {
-                setState(() {}); // Rebuild to show/hide the '저장' button based on text length
+                setState(() {});
               },
             ),
             Spacer(),
@@ -70,11 +71,11 @@ class _MessageCreatePageState extends State<MessageCreatePage> {
                 }
               },
               style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(CafeTheme.accentColor), // Set background color here
+                backgroundColor: WidgetStateProperty.all(CafeTheme.accentColor),
               ),
               child: Text(
                 '개봉 날짜 선택: ${selectedDate.toLocal().toString().substring(0, 16)}',
-                style: const TextStyle(color: Colors.black), // Format the date to show only up to minute
+                style: const TextStyle(color: Colors.black),
               ),
             ),
             const SizedBox(height: 40)
@@ -82,5 +83,12 @@ class _MessageCreatePageState extends State<MessageCreatePage> {
         ),
       ),
     );
+  }
+
+  //dispose
+  @override
+  void dispose() {
+    contentController.dispose();
+    super.dispose();
   }
 }
