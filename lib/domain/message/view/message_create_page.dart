@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../constants/theme.dart';
 import '../get_x/message_controller.dart';
 import '../state/message.dart';
 
@@ -21,6 +22,25 @@ class _MessageCreatePageState extends State<MessageCreatePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('새 편지 작성'),
+        actions: [
+          // Show the '저장' button only when contentController text length is >= 2
+          if (contentController.text.length >= 2)
+            TextButton(
+              onPressed: () {
+                final message = Message(
+                  content: contentController.text,
+                  unlockDate: selectedDate,
+                  createdAt: DateTime.now(),
+                );
+                controller.addMessage(message);
+                Get.back();
+              },
+              child: const Text(
+                '저장',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -32,9 +52,12 @@ class _MessageCreatePageState extends State<MessageCreatePage> {
               decoration: const InputDecoration(
                 hintText: '미래의 나에게 하고 싶은 말을 적어보세요.',
               ),
+              onChanged: (text) {
+                setState(() {}); // Rebuild to show/hide the '저장' button based on text length
+              },
             ),
+            Spacer(),
             ElevatedButton(
-              child: Text('개봉 날짜 선택: ${selectedDate.toLocal()}'),
               onPressed: () async {
                 DateTime? picked = await showDatePicker(
                   context: context,
@@ -46,19 +69,15 @@ class _MessageCreatePageState extends State<MessageCreatePage> {
                   setState(() => selectedDate = picked);
                 }
               },
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(CafeTheme.accentColor), // Set background color here
+              ),
+              child: Text(
+                '개봉 날짜 선택: ${selectedDate.toLocal().toString().substring(0, 16)}',
+                style: const TextStyle(color: Colors.black), // Format the date to show only up to minute
+              ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                final message = Message(
-                  content: contentController.text,
-                  unlockDate: selectedDate,
-                  createdAt: DateTime.now(),
-                );
-                controller.addMessage(message);
-                Get.back();
-              },
-              child: const Text('편지 저장'),
-            ),
+            const SizedBox(height: 40)
           ],
         ),
       ),

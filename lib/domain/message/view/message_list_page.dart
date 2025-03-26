@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../constants/theme.dart';
 import '../get_x/message_controller.dart';
 import 'message_create_page.dart';
 
@@ -15,10 +16,11 @@ class MessageListPage extends StatelessWidget {
         title: const Text('나의 편지 목록'),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: CafeTheme.primaryColor,
         onPressed: () {
           Get.to(() => const MessageCreatePage());
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       body: Obx(() {
         if (controller.messages.isEmpty) {
@@ -31,7 +33,7 @@ class MessageListPage extends StatelessWidget {
             final isLocked = msg.unlockDate.isAfter(DateTime.now());
             return ListTile(
               title: Text(isLocked ? '🔒 잠긴 편지' : msg.content),
-              subtitle: Text('개봉일: ${msg.unlockDate.toLocal()}'),
+              subtitle: Text('개봉일: ${msg.unlockDate.toLocal().toString().substring(0, 16)}'),
               onTap: () {
                 if (isLocked) {
                   Get.snackbar('알림', '아직 개봉할 수 없습니다.');
